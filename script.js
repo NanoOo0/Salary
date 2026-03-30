@@ -11,6 +11,7 @@ const storeTurnoverInput = document.getElementById("storeTurnover");
 const staffPlanInput = document.getElementById("staffPlan");
 const positionSelect = document.getElementById("position");
 const attestationsSelect = document.getElementById("attestations");
+const citySelect = document.getElementById("city");
 
 const HOURLY_RATES = {
     administrator: 228,
@@ -19,6 +20,32 @@ const HOURLY_RATES = {
     opp: 162,
     cashier: 145,
     seller: 128
+};
+const CITY_CONFIGS = {
+    budennovsk: {
+        hourlyRates: {
+            administrator: 228,
+            administrator_1_month: 205,
+            administrator_2_month: 216,
+            opp: 162,
+            cashier: 145,
+            seller: 128
+        },
+        staffMboFundAt100: 22000,
+        adminMboFundAt100: 40000
+    },
+    blagodarny: {
+        hourlyRates: {
+            administrator: 239,
+            administrator_1_month: 205,
+            administrator_2_month: 216,
+            opp: 167,
+            cashier: 150,
+            seller: 128
+        },
+        staffMboFundAt100: 24000,
+        adminMboFundAt100: 44000
+    }
 };
 
 const STAFF_MBO_FUND_AT_100 = 22000;
@@ -64,6 +91,7 @@ themeToggle.addEventListener("click", toggleTheme);
 
 function getFormData() {
     return {
+        city: citySelect.value,
         hoursWorked: parseFloat(hoursWorkedInput.value),
         daysInMonth: parseInt(daysInMonthSelect.value, 10),
         storeMbo: parseFloat(storeMboInput.value),
@@ -73,6 +101,9 @@ function getFormData() {
         position: positionSelect.value,
         attestations: parseInt(attestationsSelect.value, 10)
     };
+}
+function getCityConfig(city) {
+    return CITY_CONFIGS[city] || CITY_CONFIGS.budennovsk;
 }
 
 function validateFormData(data) {
@@ -117,15 +148,17 @@ function validateFormData(data) {
 }
 
 function calculateSalary(data) {
-    const hourlyRate = HOURLY_RATES[data.position] || 0;
+    const cityConfig = getCityConfig(data.city);
+
+    const hourlyRate = cityConfig.hourlyRates[data.position] || 0;
     const basePay = data.hoursWorked * hourlyRate;
 
     const isAdmin = isAdminPosition(data.position);
     const staffWithoutAdmin = Math.max(data.staffPlan - 1, 1);
 
     const mboBonus = isAdmin
-        ? calculateAdminMboBonus(data)
-        : calculateStaffMboBonus(data, staffWithoutAdmin);
+        ? calculateAdminMboBonus(data, cityConfig)
+        : calculateStaffMboBonus(data, staffWithoutAdmin, cityConfig);
 
     const turnoverBonus = isAdmin
         ? calculateAdminTurnoverBonus(data.storeTurnover)
@@ -147,15 +180,15 @@ function calculateSalary(data) {
     };
 }
 
-function calculateStaffMboBonus(data, staffWithoutAdmin) {
+function calculateStaffMboBonus(data, staffWithoutAdmin, cityConfig) {
     const storeFund =
-        ((STAFF_MBO_FUND_AT_100 * staffWithoutAdmin) / 100) * data.storeMbo;
+        ((cityConfig.staffMboFundAt100 * staffWithoutAdmin) / 100) * data.storeMbo;
 
     return (storeFund / 100) * data.employeeMbo;
 }
 
-function calculateAdminMboBonus(data) {
-    return (((ADMIN_MBO_FUND_AT_100 / 100) * data.storeMbo) / 100) * data.employeeMbo;
+function calculateAdminMboBonus(data, cityConfig) {
+    return (((cityConfig.adminMboFundAt100 / 100) * data.storeMbo) / 100) * data.employeeMbo;
 }
 
 function calculateAdminTurnoverBonus(storeTurnover) {
@@ -178,6 +211,11 @@ function getLinearStaffHours(staffPlan, daysInMonth) {
     const oppHours = getPositionNormHours("opp", staffPlan, daysInMonth);
     const cashierHours = getPositionNormHours("cashier", staffPlan, daysInMonth);
 
+    if (staffPlan === 6) {
+        const sellerHours = getPositionNormHours("seller", staffPlan, daysInMonth);
+        return roundTo2(oppHours + cashierHours + sellerHours);
+    }
+
     return roundTo2(oppHours + cashierHours);
 }
 
@@ -196,24 +234,32 @@ function calculateAttestationBonus(data, isAdmin, staffWithoutAdmin) {
 }
 
 function getPositionNormHours(position, staffPlan, daysInMonth) {
-    const adminHoursPerDayAtPlan4 = 176 / 31;
-    const adminHoursPerDayAtPlan5 = 8 * 5 / 7;
-    const cashierHoursPerDaySingle = 186 / 31;
+    const adminHoursPerDayPlan4 = 176 / 31;
+    const adminHoursPerDayPlan5Or6 = 176 / 31;
+
     const oppHoursPerDay = 372 / 31;
-    const sellerHoursPerDay = 186 / 31;
+    const cashierHoursPerDayPlan4 = 186 / 31;
+    const cashierHoursPerDayPlan5Or6 = 372 / 31;
+
+    const sellerHoursPerDayPlan6 = 186 / 31;
+    const sellerHoursPerDayDefault = 186 / 31;
 
     if (staffPlan === 4) {
         switch (position) {
             case "administrator":
             case "administrator_1_month":
             case "administrator_2_month":
-                return roundTo2(adminHoursPerDayAtPlan4 * daysInMonth);
-            case "cashier":
-                return roundTo2(cashierHoursPerDaySingle * daysInMonth);
+                return roundTo2(adminHoursPerDayPlan4 * daysInMonth);
+
             case "opp":
                 return roundTo2(oppHoursPerDay * daysInMonth);
+
+            case "cashier":
+                return roundTo2(cashierHoursPerDayPlan4 * daysInMonth);
+
             case "seller":
-                return roundTo2(sellerHoursPerDay * daysInMonth);
+                return roundTo2(sellerHoursPerDayDefault * daysInMonth);
+
             default:
                 return 0;
         }
@@ -224,13 +270,38 @@ function getPositionNormHours(position, staffPlan, daysInMonth) {
             case "administrator":
             case "administrator_1_month":
             case "administrator_2_month":
-                return roundTo2(adminHoursPerDayAtPlan5 * daysInMonth);
-            case "cashier":
-                return roundTo2((cashierHoursPerDaySingle * 2) * daysInMonth);
+                return roundTo2(adminHoursPerDayPlan5Or6 * daysInMonth);
+
             case "opp":
                 return roundTo2(oppHoursPerDay * daysInMonth);
+
+            case "cashier":
+                return roundTo2(cashierHoursPerDayPlan5Or6 * daysInMonth);
+
             case "seller":
-                return roundTo2(sellerHoursPerDay * daysInMonth);
+                return roundTo2(sellerHoursPerDayDefault * daysInMonth);
+
+            default:
+                return 0;
+        }
+    }
+
+    if (staffPlan === 6) {
+        switch (position) {
+            case "administrator":
+            case "administrator_1_month":
+            case "administrator_2_month":
+                return roundTo2(adminHoursPerDayPlan5Or6 * daysInMonth);
+
+            case "opp":
+                return roundTo2(oppHoursPerDay * daysInMonth);
+
+            case "cashier":
+                return roundTo2(cashierHoursPerDayPlan5Or6 * daysInMonth);
+
+            case "seller":
+                return roundTo2(sellerHoursPerDayPlan6 * daysInMonth);
+
             default:
                 return 0;
         }
@@ -240,13 +311,17 @@ function getPositionNormHours(position, staffPlan, daysInMonth) {
         case "administrator":
         case "administrator_1_month":
         case "administrator_2_month":
-            return roundTo2(adminHoursPerDayAtPlan4 * daysInMonth);
-        case "cashier":
-            return roundTo2(cashierHoursPerDaySingle * daysInMonth);
+            return roundTo2(adminHoursPerDayPlan4 * daysInMonth);
+
         case "opp":
             return roundTo2(oppHoursPerDay * daysInMonth);
+
+        case "cashier":
+            return roundTo2(cashierHoursPerDayPlan4 * daysInMonth);
+
         case "seller":
-            return roundTo2(sellerHoursPerDay * daysInMonth);
+            return roundTo2(sellerHoursPerDayDefault * daysInMonth);
+
         default:
             return 0;
     }
@@ -287,12 +362,24 @@ function formatMoney(value) {
 function roundTo2(value) {
     return Math.round(value * 100) / 100;
 }
+function getCityLabel(cityValue) {
+    const cityMap = {
+        budennovsk: "Буденновск",
+        blagodarny: "Благодарный"
+    };
+
+    return cityMap[cityValue] || cityValue;
+}
 
 function renderResult(data, calculation) {
     resultContent.innerHTML = `
         <div class="result-layout">
             <div class="result-block">
                 <h3 class="result-block-title">Основные данные</h3>
+                <div class="result-line">
+                    <span class="result-label">Город</span>
+                    <span class="result-value">${getCityLabel(data.city)}</span>
+                </div>
                 <div class="result-line">
                     <span class="result-label">Должность</span>
                     <span class="result-value">${getPositionLabel(data.position)}</span>
