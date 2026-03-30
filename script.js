@@ -142,7 +142,8 @@ function calculateSalary(data) {
         turnoverBonus,
         attestationBonus,
         totalSalary,
-        monthNormHours: getMonthlyNormHours(data.position, data.staffPlan, data.daysInMonth)
+        positionNormHours: getPositionNormHours(data.position, data.staffPlan, data.daysInMonth),
+        linearStaffHours: getLinearStaffHours(data.staffPlan, data.daysInMonth)
     };
 }
 
@@ -163,14 +164,21 @@ function calculateAdminTurnoverBonus(storeTurnover) {
 
 function calculateStaffTurnoverBonus(data) {
     const turnoverFund = (data.storeTurnover / 100) * 0.5;
-    const monthlyNormHours = getMonthlyNormHours(data.position, data.staffPlan, data.daysInMonth);
+    const linearStaffHours = getLinearStaffHours(data.staffPlan, data.daysInMonth);
 
-    if (monthlyNormHours <= 0) {
+    if (linearStaffHours <= 0) {
         return 0;
     }
 
-    const bonusPerHour = turnoverFund / monthlyNormHours;
+    const bonusPerHour = turnoverFund / linearStaffHours;
     return bonusPerHour * data.hoursWorked;
+}
+
+function getLinearStaffHours(staffPlan, daysInMonth) {
+    const oppHours = getPositionNormHours("opp", staffPlan, daysInMonth);
+    const cashierHours = getPositionNormHours("cashier", staffPlan, daysInMonth);
+
+    return roundTo2(oppHours + cashierHours);
 }
 
 function calculateAttestationBonus(data, isAdmin, staffWithoutAdmin) {
@@ -187,7 +195,7 @@ function calculateAttestationBonus(data, isAdmin, staffWithoutAdmin) {
     return attestationBase * coefficient;
 }
 
-function getMonthlyNormHours(position, staffPlan, daysInMonth) {
+function getPositionNormHours(position, staffPlan, daysInMonth) {
     const adminHoursPerDayAtPlan4 = 176 / 31;
     const adminHoursPerDayAtPlan5 = 8 * 5 / 7;
     const cashierHoursPerDaySingle = 186 / 31;
@@ -299,7 +307,11 @@ function renderResult(data, calculation) {
                 </div>
                 <div class="result-line">
                     <span class="result-label">Норма часов должности</span>
-                    <span class="result-value">${calculation.monthNormHours}</span>
+                    <span class="result-value">${calculation.positionNormHours}</span>
+                </div>
+                <div class="result-line">
+                    <span class="result-label">Часы линейного персонала</span>
+                    <span class="result-value">${calculation.linearStaffHours}</span>
                 </div>
                 <div class="result-line">
                     <span class="result-label">Ставка за час</span>
