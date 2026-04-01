@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инструкции</title>
+
+    <link rel="stylesheet" href="css/ui.css">
+    <link rel="stylesheet" href="css/instructions.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container site-header__inner">
+        <a href="index.html" class="site-brand">
+            <div class="site-brand__logo">i</div>
+            <div class="site-brand__text">
+                <div class="site-brand__title">Сайт помощи персоналу</div>
+                <div class="site-brand__subtitle">Калькулятор и инструкции</div>
+            </div>
+        </a>
+
+        <nav class="site-nav">
+            <a class="nav-btn" href="index.html">Калькулятор</a>
+            <a class="nav-btn nav-btn--accent" href="instructions.html">Инструкции</a>
+        </nav>
+
+    </div>
+</header>
+
+<main class="page-main">
+    <div class="container">
+        <div class="instructions-layout">
+            <aside class="instructions-sidebar glass-card">
+                <div class="instructions-sidebar__header">
+                    <h2>Инструкции</h2>
+                    <p>Выберите нужный раздел</p>
+                </div>
+
+                <nav class="instructions-menu">
+                    <a href="#instruction-1" class="instructions-menu__link active">Открытие смены</a>
+<!--                    <a href="#instruction-2" class="instructions-menu__link">Работа с кассой</a>-->
+<!--                    <a href="#instruction-3" class="instructions-menu__link">Закрытие смены</a>-->
+<!--                    <a href="#instruction-4" class="instructions-menu__link">Работа с клиентом</a>-->
+<!--                    <a href="#instruction-5" class="instructions-menu__link">Спорные ситуации</a>-->
+                </nav>
+            </aside>
+
+            <section class="instructions-content">
+                <article id="instruction-1" class="instruction-block glass-card">
+                    <span class="instruction-block__label">Инструкция</span>
+                    <h2>Как посчитать ЗП персоналу</h2>
+                    <p>Зарплата состоит из 4 факторов, такие как: Оклад за часы, Премия МБО, Премя от товарооборота, Премия за Аттестации.<br>
+                        <strong>Высчитать это все очень легко, начнем с часов:</strong><br>
+                        <br>
+                        Часы * ставка за 1 час(Можно увидеть в расшифровке).<br>
+                        <br>
+                        <strong>Высчитываем премию MBO</strong><br>
+                        <br>
+                        Возьмем для наглядности такие данные:<br>
+                        ШР магазина 4<br>
+                        Мбо магазина - 92.32%<br>
+                        Мбо сотрудника - 24%<br>
+                        Премиальный фонд на одного сотрудника при 100% мбо магазина, у буденновска это - 22000 руб.<br>
+                        Т.е. 1% премии: 22000 * ШР без админа 3 = 66000 руб. - 66000/100 = 660 руб. 1%<br>
+                        Высчитаем премиальный фонд магазина из этих данных:<br>
+                        1% мбо * мбо магазина - 660 * 92.32% = 60931.2 руб<br>
+                    </p>
+                </article>
+
+<!--                <article id="instruction-2" class="instruction-block glass-card">-->
+<!--                    <span class="instruction-block__label">Инструкция</span>-->
+<!--                    <h2>Работа с кассой</h2>-->
+<!--                    <p>Здесь будет текст инструкции по работе с кассой.</p>-->
+<!--                </article>-->
+
+<!--                <article id="instruction-3" class="instruction-block glass-card">-->
+<!--                    <span class="instruction-block__label">Инструкция</span>-->
+<!--                    <h2>Закрытие смены</h2>-->
+<!--                    <p>Здесь будет текст инструкции по закрытию смены.</p>-->
+<!--                </article>-->
+
+<!--                <article id="instruction-4" class="instruction-block glass-card">-->
+<!--                    <span class="instruction-block__label">Инструкция</span>-->
+<!--                    <h2>Работа с клиентом</h2>-->
+<!--                    <p>Здесь будет текст инструкции по работе с клиентом.</p>-->
+<!--                </article>-->
+
+<!--                <article id="instruction-5" class="instruction-block glass-card">-->
+<!--                    <span class="instruction-block__label">Инструкция</span>-->
+<!--                    <h2>Спорные ситуации</h2>-->
+<!--                    <p>Здесь будет текст инструкции по решению спорных ситуаций.</p>-->
+<!--                </article>-->
+            </section>
+        </div>
+    </div>
+</main>
+
+<script src="js/instructions.js"></script>
+</body>
+</html>

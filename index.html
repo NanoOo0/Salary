@@ -4,9 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Калькулятор зарплаты</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/ui.css" />
 </head>
 <body>
+<header class="site-header">
+    <div class="container site-header__inner">
+        <a href="index.html" class="site-brand">
+            <div class="site-brand__logo">i</div>
+            <div class="site-brand__text">
+                <div class="site-brand__title">Сайт помощи персоналу</div>
+                <div class="site-brand__subtitle">Калькулятор и инструкции</div>
+            </div>
+        </a>
+
+        <nav class="site-nav">
+            <a class="nav-btn nav-btn--accent" href="index.html">Калькулятор</a>
+            <a class="nav-btn" href="instructions.html">Инструкции</a>
+        </nav>
+
+    </div>
+</header>
 <div class="page">
     <div class="calculator-card">
         <div class="topbar">
@@ -16,10 +34,10 @@
                     Введите данные сотрудника для расчета заработной платы
                 </p>
             </div>
-
             <button type="button" id="themeToggle" class="theme-toggle" aria-label="Переключить тему">
                 🌙 Тёмная тема
             </button>
+
         </div>
 
 
@@ -146,6 +164,6 @@
     </div>
 </div>
 
-<script src="script.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>

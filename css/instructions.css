@@ -1,0 +1,105 @@
+.instructions-layout {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.instructions-sidebar {
+    position: sticky;
+    top: calc(var(--header-height) + 20px);
+    padding: 22px;
+}
+
+.instructions-sidebar__header {
+    margin-bottom: 18px;
+}
+
+.instructions-sidebar__header h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+}
+
+.instructions-sidebar__header p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.instructions-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.instructions-menu__link {
+    display: block;
+    padding: 14px 16px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.instructions-menu__link:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.instructions-menu__link.active {
+    color: #f3f7ff;
+    background: linear-gradient(135deg, rgba(110, 168, 255, 0.16), rgba(79, 127, 255, 0.22));
+    border-color: rgba(110, 168, 255, 0.35);
+}
+
+.instructions-content {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.instruction-block {
+    padding: 28px;
+    scroll-margin-top: calc(var(--header-height) + 20px);
+}
+
+.instruction-block__label {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(110, 168, 255, 0.12);
+    border: 1px solid rgba(110, 168, 255, 0.22);
+    color: #d5e4ff;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.instruction-block h2 {
+    margin: 0 0 14px;
+    font-size: 28px;
+    line-height: 1.15;
+}
+
+.instruction-block p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.8;
+    font-size: 20px;
+}
+
+@media (max-width: 1100px) {
+    .instructions-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .instructions-sidebar {
+        position: static;
+    }
+}
