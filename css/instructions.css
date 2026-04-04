@@ -15,7 +15,7 @@
     margin-bottom: 18px;
 }
 
-.instructions-sidebar__header h2 {
+.instructions-sidebar__header h2, h3, h4 {
     margin: 0 0 8px;
     font-size: 22px;
 }
