@@ -49,6 +49,11 @@ a {
     backdrop-filter: blur(14px);
     background: rgba(8, 13, 24, 0.78);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transform: translateY(0);
+    transition: transform 0.3s ease, background 0.25s ease, border-color 0.25s ease;
+}
+.site-header.header-hidden {
+    transform: translateY(-100%);
 }
 
 .site-header__inner {

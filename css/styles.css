@@ -1,23 +1,24 @@
-:root {
-    --bg: #f3f4f6;
-    --card: #ffffff;
-    --card-secondary: #f9fafb;
-    --text: #1f2937;
-    --muted: #6b7280;
-    --border: #e5e7eb;
-    --input-border: #d1d5db;
-    --primary: #2563eb;
-    --primary-soft: rgba(37, 99, 235, 0.12);
-    --secondary-btn: #e5e7eb;
-    --secondary-btn-text: #111827;
-    --success-bg: #eef2ff;
-    --success-border: #c7d2fe;
-    --success-text: #1d4ed8;
-    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    --danger: #dc2626;
-}
+/*:root {*/
+/*    --bg: #f3f4f6;*/
+/*    --card: #ffffff;*/
+/*    --card-secondary: #f9fafb;*/
+/*    --text: #1f2937;*/
+/*    --muted: #6b7280;*/
+/*    --border: #e5e7eb;*/
+/*    --input-border: #d1d5db;*/
+/*    --primary: #2563eb;*/
+/*    --primary-soft: rgba(37, 99, 235, 0.12);*/
+/*    --secondary-btn: #e5e7eb;*/
+/*    --secondary-btn-text: #111827;*/
+/*    --success-bg: #eef2ff;*/
+/*    --success-border: #c7d2fe;*/
+/*    --success-text: #1d4ed8;*/
+/*    --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);*/
+/*    --danger: #dc2626;*/
+/*}*/
 
-body.dark-theme {
+/*body.dark-theme {*/
+:root{
     --bg: #0b1220;
     --card: #111827;
     --card-secondary: #172033;
@@ -70,11 +71,19 @@ body {
     transition: background 0.25s ease, box-shadow 0.25s ease;
 }
 
+/*.topbar {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    align-items: flex-start;*/
+/*    gap: 16px;*/
+/*    margin-bottom: 26px;*/
+/*}*/
+
 .topbar {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 8px;
     margin-bottom: 26px;
 }
 
@@ -92,22 +101,22 @@ body {
     line-height: 1.5;
 }
 
-.theme-toggle {
-    border: 1px solid var(--border);
-    background: var(--card-secondary);
-    color: var(--text);
-    border-radius: 12px;
-    padding: 12px 14px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
-}
+/*.theme-toggle {*/
+/*    border: 1px solid var(--border);*/
+/*    background: var(--card-secondary);*/
+/*    color: var(--text);*/
+/*    border-radius: 12px;*/
+/*    padding: 12px 14px;*/
+/*    cursor: pointer;*/
+/*    font-size: 14px;*/
+/*    font-weight: 600;*/
+/*    white-space: nowrap;*/
+/*    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;*/
+/*}*/
 
-.theme-toggle:hover {
-    transform: translateY(-1px);
-}
+/*.theme-toggle:hover {*/
+/*    transform: translateY(-1px);*/
+/*}*/
 
 .salary-form {
     margin-bottom: 28px;
@@ -287,9 +296,6 @@ body {
         align-items: stretch;
     }
 
-    .theme-toggle {
-        width: 100%;
-    }
 
     .title {
         font-size: 28px;

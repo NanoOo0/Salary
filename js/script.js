@@ -1,7 +1,6 @@
 const salaryForm = document.getElementById("salaryForm");
 const clearBtn = document.getElementById("clearBtn");
 const resultContent = document.getElementById("resultContent");
-const themeToggle = document.getElementById("themeToggle");
 
 const hoursWorkedInput = document.getElementById("hoursWorked");
 const daysInMonthSelect = document.getElementById("daysInMonth");
@@ -65,7 +64,6 @@ const STAFF_ATTESTATION_COEFFICIENTS = {
     3: 1.6
 };
 
-initTheme();
 
 salaryForm.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -87,7 +85,6 @@ clearBtn.addEventListener("click", function () {
     resultContent.textContent = "Заполните поля и нажмите «Рассчитать»";
 });
 
-themeToggle.addEventListener("click", toggleTheme);
 
 function getFormData() {
     return {
@@ -438,26 +435,3 @@ function renderResult(data, calculation) {
     `;
 }
 
-function initTheme() {
-    const savedTheme = localStorage.getItem("salaryCalcTheme");
-
-    if (savedTheme === "dark") {
-        document.body.classList.add("dark-theme");
-    }
-
-    updateThemeButton();
-}
-
-function toggleTheme() {
-    document.body.classList.toggle("dark-theme");
-
-    const isDark = document.body.classList.contains("dark-theme");
-    localStorage.setItem("salaryCalcTheme", isDark ? "dark" : "light");
-
-    updateThemeButton();
-}
-
-function updateThemeButton() {
-    const isDark = document.body.classList.contains("dark-theme");
-    themeToggle.textContent = isDark ? "☀️ Светлая тема" : "🌙 Тёмная тема";
-}
