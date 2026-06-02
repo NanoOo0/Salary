@@ -421,6 +421,10 @@ function renderResult(data, calculation) {
                     <span class="result-label">Часы сотрудника</span>
                     <span class="result-value">${data.hoursWorked}</span>
                 </div>
+                 <div class="result-line">
+                    <span class="result-label">МБО сотрудника</span>
+                    <span class="result-value">${data.employeeMbo}</span>
+                </div>
                 <div class="result-line">
                     <span class="result-label">Дней в месяце</span>
                     <span class="result-value">${data.daysInMonth}</span>
