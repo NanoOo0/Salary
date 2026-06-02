@@ -44,7 +44,31 @@ const CITY_CONFIGS = {
         },
         staffMboFundAt100: 24000,
         adminMboFundAt100: 44000
-    }
+    },
+    novoselitskoe: {
+        hourlyRates: {
+            administrator: 211,
+            administrator_1_month: 189,
+            administrator_2_month: 200,
+            opp: 162,
+            cashier: 145,
+            seller: 128
+        },
+        staffMboFundAt100: 24000,
+        adminMboFundAt100: 44000
+    },
+    alexandrovskoe: {
+        hourlyRates: {
+            administrator: 228,
+            administrator_1_month: 205,
+            administrator_2_month: 216,
+            opp: 162,
+            cashier: 145,
+            seller: 128
+        },
+        staffMboFundAt100: 22000,
+        adminMboFundAt100: 40000
+    },
 };
 
 const STAFF_MBO_FUND_AT_100 = 22000;
