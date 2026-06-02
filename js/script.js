@@ -248,14 +248,15 @@ function calculateAttestationBonus(data, isAdmin, staffWithoutAdmin) {
     if (!data.attestations || data.attestations === 0) {
         return 0;
     }
+    const linearStaffHours = getLinearStaffHours(data.staffPlan, data.daysInMonth);
 
-    const attestationBase = ((data.storeTurnover / 100) * 0.5) / staffWithoutAdmin;
+    const attestationBase = ((data.storeTurnover / 100) * 0.5) / linearStaffHours;
 
     const coefficient = isAdmin
         ? (ADMIN_ATTESTATION_COEFFICIENTS[data.attestations] || 0)
         : (STAFF_ATTESTATION_COEFFICIENTS[data.attestations] || 0);
 
-    return attestationBase * coefficient;
+    return attestationBase * data.hoursWorked * coefficient;
 }
 
 function getPositionNormHours(position, staffPlan, daysInMonth) {
