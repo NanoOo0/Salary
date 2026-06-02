@@ -26,6 +26,7 @@ const CITY_CONFIGS = {
             administrator: 228,
             administrator_1_month: 205,
             administrator_2_month: 216,
+            io: 145,
             opp: 162,
             cashier: 145,
             seller: 128
@@ -38,6 +39,7 @@ const CITY_CONFIGS = {
             administrator: 239,
             administrator_1_month: 205,
             administrator_2_month: 216,
+            io: 150,
             opp: 167,
             cashier: 150,
             seller: 128
@@ -50,6 +52,7 @@ const CITY_CONFIGS = {
             administrator: 211,
             administrator_1_month: 189,
             administrator_2_month: 200,
+            io: 145,
             opp: 162,
             cashier: 145,
             seller: 128
@@ -62,6 +65,7 @@ const CITY_CONFIGS = {
             administrator: 228,
             administrator_1_month: 205,
             administrator_2_month: 216,
+            io: 145,
             opp: 162,
             cashier: 145,
             seller: 128
@@ -270,6 +274,7 @@ function getPositionNormHours(position, staffPlan, daysInMonth) {
             case "administrator":
             case "administrator_1_month":
             case "administrator_2_month":
+            case "io":
                 return roundTo2(adminHoursPerDayPlan4 * daysInMonth);
 
             case "opp":
@@ -291,6 +296,7 @@ function getPositionNormHours(position, staffPlan, daysInMonth) {
             case "administrator":
             case "administrator_1_month":
             case "administrator_2_month":
+            case "io":
                 return roundTo2(adminHoursPerDayPlan5Or6 * daysInMonth);
 
             case "opp":
@@ -312,6 +318,7 @@ function getPositionNormHours(position, staffPlan, daysInMonth) {
             case "administrator":
             case "administrator_1_month":
             case "administrator_2_month":
+            case "io":
                 return roundTo2(adminHoursPerDayPlan5Or6 * daysInMonth);
 
             case "opp":
@@ -332,6 +339,7 @@ function getPositionNormHours(position, staffPlan, daysInMonth) {
         case "administrator":
         case "administrator_1_month":
         case "administrator_2_month":
+        case "io":
             return roundTo2(adminHoursPerDayPlan4 * daysInMonth);
 
         case "opp":
@@ -352,7 +360,8 @@ function isAdminPosition(position) {
     return (
         position === "administrator" ||
         position === "administrator_1_month" ||
-        position === "administrator_2_month"
+        position === "administrator_2_month" ||
+        position === "io"
     );
 }
 
@@ -365,6 +374,7 @@ function getPositionLabel(positionValue) {
         administrator: "Администратор",
         administrator_1_month: "Администратор 1 мес",
         administrator_2_month: "Администратор 2 мес",
+        io: "ИО Администратора",
         opp: "ОПП",
         cashier: "Кассир",
         seller: "Продавец"
@@ -386,7 +396,9 @@ function roundTo2(value) {
 function getCityLabel(cityValue) {
     const cityMap = {
         budennovsk: "Буденновск",
-        blagodarny: "Благодарный"
+        blagodarny: "Благодарный",
+        novoselitskoe: "Новоселицкое",
+        alexandrovskoe: "Александровское",
     };
 
     return cityMap[cityValue] || cityValue;
