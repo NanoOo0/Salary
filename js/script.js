@@ -12,6 +12,12 @@ const positionSelect = document.getElementById("position");
 const attestationsSelect = document.getElementById("attestations");
 const citySelect = document.getElementById("city");
 
+const GOOGLE_SHEETS_ENDPOINT =
+    "https://script.google.com/macros/s/AKfycbze7wSj7k33Re_GcF_ENrd-c1H6Q2nYzRKy2PfGchjIEebQvASVx-4GdqJPowX_x5d7XQ/exec";
+
+const GOOGLE_SHEETS_SECRET =
+    "AAF4tZLF4uCWZGI1pP_IQX9qwO8";
+
 const HOURLY_RATES = {
     administrator: 228,
     administrator_1_month: 205,
@@ -103,7 +109,9 @@ salaryForm.addEventListener("submit", function (event) {
     }
 
     const calculation = calculateSalary(formData);
+
     renderResult(formData, calculation);
+    sendCalculationToGoogleSheets(formData, calculation);
 });
 
 clearBtn.addEventListener("click", function () {
@@ -474,5 +482,33 @@ function renderResult(data, calculation) {
             </div>
         </div>
     `;
+}
+
+function sendCalculationToGoogleSheets(data, calculation) {
+    const payload = {
+        secret: GOOGLE_SHEETS_SECRET,
+        city: getCityLabel(data.city),
+        position: getPositionLabel(data.position),
+        hoursWorked: data.hoursWorked,
+        daysInMonth: data.daysInMonth,
+        storeMbo: data.storeMbo,
+        employeeMbo: data.employeeMbo,
+        storeTurnover: data.storeTurnover,
+        staffPlan: data.staffPlan,
+        attestations: data.attestations,
+        totalSalary: roundTo2(calculation.totalSalary)
+    };
+
+    fetch(GOOGLE_SHEETS_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(payload),
+        keepalive: true
+    }).catch(error => {
+        console.error("Не удалось сохранить статистику расчёта:", error);
+    });
 }
 
