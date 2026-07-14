@@ -568,6 +568,7 @@ function sendCalculationToGoogleSheets(data, calculation) {
         page: window.location.pathname,
 
         city: getCityLabel(data.city),
+        storeNumber: storeNumberInput.value.trim(),
         position: getPositionLabel(data.position),
         hoursWorked: data.hoursWorked,
         daysInMonth: data.daysInMonth,
