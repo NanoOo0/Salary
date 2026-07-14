@@ -11,12 +11,79 @@ const staffPlanInput = document.getElementById("staffPlan");
 const positionSelect = document.getElementById("position");
 const attestationsSelect = document.getElementById("attestations");
 const citySelect = document.getElementById("city");
+const storeNumberInput = document.getElementById("storeNumber");
 
 const GOOGLE_SHEETS_ENDPOINT =
-    "https://script.google.com/macros/s/AKfycbznF57s7BXRR_SbZj1IDZF-5mTb8NjzUDgpMkCpx5hmwrPdFvZNQm-C-MEB1XPvvaAVpg/exec";
+    "https://script.google.com/macros/s/AKfycbx1DEicAIYpLxDdbnl8YoHvRcwww7bRy0FNkZHknT9p5NAN7nkeZrcO-9cX0SUtwYzM_Q/exec";
 
 const GOOGLE_SHEETS_SECRET =
     "AAF4tZLF4uCWZGI1pP_IQX9qwO8";
+
+function getOrCreateVisitorId() {
+    const storageKey = "salaryCalculatorVisitorId";
+
+    let visitorId = localStorage.getItem(storageKey);
+
+    if (!visitorId) {
+        visitorId = crypto.randomUUID();
+        localStorage.setItem(storageKey, visitorId);
+    }
+
+    return visitorId;
+}
+
+function getOrCreateSessionId() {
+    const storageKey = "salaryCalculatorSessionId";
+
+    let sessionId = sessionStorage.getItem(storageKey);
+
+    if (!sessionId) {
+        sessionId = crypto.randomUUID();
+        sessionStorage.setItem(storageKey, sessionId);
+    }
+
+    return sessionId;
+}
+
+function getDeviceType() {
+    const userAgent = navigator.userAgent;
+
+    if (/tablet|ipad|playbook|silk/i.test(userAgent)) {
+        return "Планшет";
+    }
+
+    if (/mobile|android|iphone|ipod/i.test(userAgent)) {
+        return "Телефон";
+    }
+
+    return "Компьютер";
+}
+
+function getBrowserName() {
+    const userAgent = navigator.userAgent;
+
+    if (userAgent.includes("Edg/")) {
+        return "Microsoft Edge";
+    }
+
+    if (userAgent.includes("OPR/") || userAgent.includes("Opera")) {
+        return "Opera";
+    }
+
+    if (userAgent.includes("Firefox/")) {
+        return "Firefox";
+    }
+
+    if (userAgent.includes("Chrome/")) {
+        return "Chrome";
+    }
+
+    if (userAgent.includes("Safari/")) {
+        return "Safari";
+    }
+
+    return "Другой";
+}
 
 const HOURLY_RATES = {
     administrator: 228,
@@ -125,6 +192,7 @@ clearBtn.addEventListener("click", function () {
 function getFormData() {
     return {
         city: citySelect.value,
+        storeNumber: parseInt(storeNumberInput.value, 10),
         hoursWorked: parseFloat(hoursWorkedInput.value),
         daysInMonth: parseInt(daysInMonthSelect.value, 10),
         storeMbo: parseFloat(storeMboInput.value),
@@ -141,6 +209,7 @@ function getCityConfig(city) {
 
 function validateFormData(data) {
     if (
+        Number.isNaN(data.storeNumber) ||
         Number.isNaN(data.hoursWorked) ||
         Number.isNaN(data.daysInMonth) ||
         Number.isNaN(data.storeMbo) ||
@@ -423,6 +492,10 @@ function renderResult(data, calculation) {
                     <span class="result-value">${getCityLabel(data.city)}</span>
                 </div>
                 <div class="result-line">
+                    <span class="result-label">Номер магазина</span>
+                    <span class="result-value">${data.storeNumber}</span>
+                </div>
+                <div class="result-line">
                     <span class="result-label">Должность</span>
                     <span class="result-value">${getPositionLabel(data.position)}</span>
                 </div>
@@ -487,6 +560,13 @@ function renderResult(data, calculation) {
 function sendCalculationToGoogleSheets(data, calculation) {
     const payload = {
         secret: GOOGLE_SHEETS_SECRET,
+
+        visitorId: getOrCreateVisitorId(),
+        sessionId: getOrCreateSessionId(),
+        deviceType: getDeviceType(),
+        browser: getBrowserName(),
+        page: window.location.pathname,
+
         city: getCityLabel(data.city),
         position: getPositionLabel(data.position),
         hoursWorked: data.hoursWorked,
