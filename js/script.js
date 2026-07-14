@@ -13,7 +13,7 @@ const attestationsSelect = document.getElementById("attestations");
 const citySelect = document.getElementById("city");
 
 const GOOGLE_SHEETS_ENDPOINT =
-    "https://script.google.com/macros/s/AKfycbze7wSj7k33Re_GcF_ENrd-c1H6Q2nYzRKy2PfGchjIEebQvASVx-4GdqJPowX_x5d7XQ/exec";
+    "https://script.google.com/macros/s/AKfycbznF57s7BXRR_SbZj1IDZF-5mTb8NjzUDgpMkCpx5hmwrPdFvZNQm-C-MEB1XPvvaAVpg/exec";
 
 const GOOGLE_SHEETS_SECRET =
     "AAF4tZLF4uCWZGI1pP_IQX9qwO8";
